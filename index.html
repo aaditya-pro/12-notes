@@ -1,1 +1,81 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADDY Notes — Admin Login</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<main class="login-page">
+
+  <div class="login-card">
+
+    <div class="brand">
+      <div class="brand-icon">A</div>
+      <div>
+        <h2>ADDY Notes</h2>
+        <span>PRIVATE AREA</span>
+      </div>
+    </div>
+
+    <div class="login-heading">
+      <h1>Welcome back.</h1>
+      <p>Sign in to manage your ADDY library.</p>
+    </div>
+
+    <form id="loginForm">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="admin@example.com"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+
+        <div class="password-wrapper">
+          <input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            required
+          >
+
+          <button type="button" id="togglePassword">
+            Show
+          </button>
+        </div>
+      </div>
+
+      <button class="primary-button" type="submit">
+        <span id="loginText">Sign in →</span>
+        <span id="loginLoader" class="loader hidden"></span>
+      </button>
+
+      <p id="loginMessage" class="message"></p>
+
+    </form>
+
+  </div>
+
+</main>
+
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+</body>
+</html>
