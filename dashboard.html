@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADDY Notes — Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<header class="topbar">
+
+  <div class="brand">
+    <div class="brand-icon">A</div>
+
+    <div>
+      <h2>ADDY Notes</h2>
+      <span>ADMIN</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+
+    <div class="admin-user">
+      <span class="status-dot"></span>
+      <span id="adminEmail">Admin</span>
+    </div>
+
+    <button id="logoutBtn" class="logout-button">
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="dashboard">
+
+  <section class="welcome">
+
+    <div>
+      <span class="eyebrow">LIBRARY MANAGEMENT</span>
+
+      <h1>Upload your notes.</h1>
+
+      <p>
+        Add PDFs, presentations, documents and study materials
+        to your ADDY library.
+      </p>
+    </div>
+
+    <div class="stats">
+
+      <div class="stat-card">
+        <strong id="fileCount">0</strong>
+        <span>Total Files</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- UPLOAD CARD -->
+
+  <section class="upload-card">
+
+    <div class="section-title">
+
+      <div>
+        <h2>Upload a file</h2>
+        <p>Add a new note to your library.</p>
+      </div>
+
+    </div>
+
+
+    <div id="dropZone" class="drop-zone">
+
+      <input
+        type="file"
+        id="fileInput"
+        hidden
+        accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt,.zip"
+      >
+
+      <div class="upload-icon">
+        ↑
+      </div>
+
+      <h3>Drop your file here</h3>
+
+      <p>
+        or
+        <button id="browseBtn" type="button">
+          browse files
+        </button>
+      </p>
+
+      <small>
+        PDF · PPT · PPTX · DOC · DOCX · XLS · XLSX · TXT · ZIP
+      </small>
+
+    </div>
+
+
+    <div id="selectedFile" class="selected-file hidden">
+
+      <div class="file-icon" id="selectedIcon">
+        📄
+      </div>
+
+      <div class="selected-info">
+
+        <strong id="selectedName">
+          file.pdf
+        </strong>
+
+        <span id="selectedSize">
+          0 MB
+        </span>
+
+      </div>
+
+      <button id="removeFile" type="button">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="upload-form">
+
+      <div class="form-grid">
+
+        <div class="input-group">
+
+          <label>Note title</label>
+
+          <input
+            type="text"
+            id="title"
+            placeholder="e.g. Class 12 Physics Chapter 1"
+          >
+
+        </div>
+
+
+        <div class="input-group">
+
+          <label>Category</label>
+
+          <select id="category">
+
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Computer">Computer</option>
+            <option value="English">English</option>
+            <option value="Nepali">Nepali</option>
+            <option value="Notes">Notes</option>
+            <option value="Other">Other</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Description <span>(optional)</span></label>
+
+        <textarea
+          id="description"
+          rows="3"
+          placeholder="Short description of this note..."
+        ></textarea>
+
+      </div>
+
+
+      <button
+        id="uploadBtn"
+        class="primary-button upload-button"
+        type="button"
+      >
+
+        <span id="uploadText">
+          Upload file →
+        </span>
+
+        <span id="uploadLoader" class="loader hidden"></span>
+
+      </button>
+
+
+      <div id="progressContainer" class="progress-container hidden">
+
+        <div class="progress-header">
+
+          <span>Uploading...</span>
+
+          <strong id="progressPercent">0%</strong>
+
+        </div>
+
+        <div class="progress-bar">
+          <div id="progressBar"></div>
+        </div>
+
+      </div>
+
+
+      <p id="uploadMessage" class="message"></p>
+
+    </div>
+
+  </section>
+
+
+  <!-- FILE LIBRARY -->
+
+  <section class="library-section">
+
+    <div class="library-header">
+
+      <div>
+
+        <span class="eyebrow">YOUR LIBRARY</span>
+
+        <h2>Uploaded files</h2>
+
+      </div>
+
+      <div class="search-box">
+
+        <span>⌕</span>
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search files..."
+        >
+
+      </div>
+
+    </div>
+
+
+    <div id="fileList" class="file-list">
+
+      <div class="empty-state">
+        Loading your library...
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- EDIT MODAL -->
+
+<div id="editModal" class="modal hidden">
+
+  <div class="modal-card">
+
+    <button id="closeModal" class="modal-close">
+      ×
+    </button>
+
+    <h2>Edit note</h2>
+
+    <p>Update your note information.</p>
+
+    <input type="hidden" id="editId">
+
+    <div class="input-group">
+
+      <label>Title</label>
+
+      <input id="editTitle" type="text">
+
+    </div>
+
+    <div class="input-group">
+
+      <label>Category</label>
+
+      <select id="editCategory">
+
+        <option>Physics</option>
+        <option>Chemistry</option>
+        <option>Mathematics</option>
+        <option>Computer</option>
+        <option>English</option>
+        <option>Nepali</option>
+        <option>Notes</option>
+        <option>Other</option>
+
+      </select>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>Description</label>
+
+      <textarea id="editDescription" rows="3"></textarea>
+
+    </div>
+
+    <button id="saveEdit" class="primary-button">
+      Save changes
+    </button>
+
+    <p id="editMessage" class="message"></p>
+
+  </div>
+
+</div>
+
+
+<script src="supabase.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>
