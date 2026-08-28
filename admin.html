@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADDY — Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">A</span>
+      <span>ADDY</span>
+    </a>
+    <nav>
+      <a href="index.html" class="back-link">← Library</a>
+    </nav>
+  </header>
+
+  <main class="admin-container">
+
+    <!-- LOGIN -->
+    <section id="loginSection" class="login-wrapper">
+      <div class="login-paper">
+        <div class="paper-holes">
+          <i></i><i></i><i></i>
+        </div>
+        <div class="login-content">
+          <div class="admin-symbol">🔐</div>
+          <h1>Admin Login</h1>
+          <p>Sign in with an authorized admin account to manage the library.</p>
+
+          <form id="loginForm">
+            <label for="email">Email</label>
+            <input id="email" type="email" required placeholder="admin@example.com" autocomplete="username">
+
+            <label for="password">Password</label>
+            <input id="password" type="password" required placeholder="••••••••" autocomplete="current-password">
+
+            <button type="submit" class="blue-button">
+              Sign In <span>→</span>
+            </button>
+
+            <div id="loginMessage" class="form-message"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="hidden">
+      <div class="dashboard-top">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>Upload and manage study materials.</p>
+        </div>
+        <button id="logoutButton" class="logout-button" type="button">Logout</button>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-paper">
+          <div class="paper-holes">
+            <i></i><i></i><i></i><i></i>
+          </div>
+          <div class="admin-paper-content">
+            <div class="paper-title">
+              <span class="paper-number">01</span>
+              <div><h2>Upload File</h2></div>
+            </div>
+
+            <form id="uploadForm">
+              <label for="fileTitle">Title</label>
+              <input id="fileTitle" type="text" required placeholder="e.g. Calculus Notes Chapter 3">
+
+              <label for="fileCategory">Category</label>
+              <select id="fileCategory" required>
+                <option value="">Select category</option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+                <option value="xlsx">XLSX</option>
+                <option value="pptx">PPTX</option>
+                <option value="other">Other</option>
+              </select>
+
+              <label for="fileDescription">Description (optional)</label>
+              <textarea id="fileDescription" rows="3" placeholder="Short description..."></textarea>
+
+              <label>File</label>
+              <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">↑</div>
+                <div>
+                  <strong>Click to choose a file</strong>
+                  <span>PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, ZIP • Max 25 MB</span>
+                </div>
+              </div>
+              <input id="fileInput" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" hidden>
+
+              <div id="selectedFile" class="selected-file">No file selected</div>
+
+              <button id="uploadButton" type="submit" class="blue-button">
+                Upload File <span>↑</span>
+              </button>
+
+              <div id="uploadMessage" class="form-message"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="admin-side">
+          <div class="stats-card">
+            <span class="section-label">LIBRARY</span>
+            <strong id="adminFileCount">0 files</strong>
+            <span>Total files in library</span>
+          </div>
+          <div class="hand-note">
+            <span>Note</span>
+            <p>Only accounts listed in the admin_users table can upload or delete files.</p>
+            <small>— ADDY</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="files-paper" style="margin-top:25px;">
+        <div class="paper-holes">
+          <i></i><i></i><i></i>
+        </div>
+        <div class="files-paper-content">
+          <div class="paper-title">
+            <span class="paper-number">02</span>
+            <div><h2>Uploaded Files</h2></div>
+          </div>
+          <div id="adminFileList" class="admin-file-list">
+            <div class="loading">Loading files...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
